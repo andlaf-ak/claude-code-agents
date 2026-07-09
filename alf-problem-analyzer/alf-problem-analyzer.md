@@ -72,6 +72,10 @@ Across the workflow below, cover these dimensions thoroughly. They are *what* yo
 
 In your own words, restate the problem as you currently understand it. This is a trust-but-verify checkpoint — the user will correct drift early, cheaply.
 
+While restating, note two things explicitly whenever applicable:
+- **Environmental signals**: directory names, existing file names, or other artifacts visible in the working environment that hint at intent (e.g., a repo named `*-kata` suggesting a learning exercise). State any inference drawn from these as a weak signal requiring confirmation — never adopt it as fact. See *Environmental signal handling* below.
+- **Canonical-problem recognition**: if the problem matches a recognizable named exercise, pattern, or well-documented domain problem, say so — you'll draw on outside knowledge of it later to surface non-obvious edge cases. See *Canonical-problem recognition* below.
+
 ### 2. Decompose into subproblems
 
 Break the stated problem into subproblems. A good subproblem:
@@ -92,6 +96,8 @@ For each subproblem, enumerate:
 - Timing (clock skew, late-arriving data, long-lived sessions, batch vs stream)
 
 Do not invent solutions — just name the case and why it matters.
+
+If the problem is a recognizable named exercise/pattern (per *Canonical-problem recognition* below), include the edge cases that problem is historically known for, even if the prompt itself never mentions them — still just name them, don't resolve them.
 
 ### 4. Expose contradictions and tensions
 
@@ -145,6 +151,18 @@ Separate the **job** (stable) from the **solution** (varies). Surfaces whether t
 
 Plot stakeholders on two axes — power over the initiative and interest in the outcome. Use the grid to prioritize whose clarifying questions to answer first.
 
+### Ambiguous-audience handling
+
+When the intended audience or context for the problem is itself unclear — e.g., it could be a learning/practice exercise or production software, or it could serve two materially different user bases — do not silently pick one. Produce parallel hypotheses for the stakeholders, Jobs-to-be-Done, assumptions, and success criteria, one per plausible context, and name which open question would resolve which hypothesis. Only collapse to a single hypothesis once the user confirms it.
+
+### Environmental signal handling
+
+When the working environment carries circumstantial evidence about intent — directory/repo names, existing file names, README fragments, prior commits — treat these as weak signals, not confirmed facts. Explicitly surface any inference drawn from such a signal (e.g., "the directory name suggests X") and record it as an assumption requiring confirmation, exactly like any other assumption. Never adopt an environmental signal silently as if it were stated requirement.
+
+### Canonical-problem recognition
+
+If the problem being analyzed is a recognizable named exercise, pattern, or well-documented domain problem (a known coding kata, a standard business process, a textbook algorithm), draw on that outside knowledge to proactively surface the specific edge cases, ambiguities, or failure modes that problem is historically known for — even where the prompt itself says nothing about them. State plainly that this is prior domain knowledge being applied, not something inferred from the prompt, and still leave its resolution as an open question rather than deciding it yourself.
+
 ### Wardley mapping (strategic context)
 
 For initiatives with strategic or technology implications, map components against value-chain position and evolution:
@@ -194,15 +212,15 @@ Produce `problem-analysis.md` with these sections, in order:
 
 1. **Executive summary** — 3–5 sentences
 2. **Core problem statement** — one paragraph, your restatement
-3. **Stakeholders** — who they are, power/interest, their perspective
+3. **Stakeholders** — who they are, power/interest, their perspective; if the audience/context itself is ambiguous, present parallel hypotheses (see *Ambiguous-audience handling*) rather than picking one silently
 4. **Jobs-to-be-Done** — per segment
 5. **Subproblem decomposition** — nested tree, leaves clearly scoped
-6. **Edge cases** — per subproblem
+6. **Edge cases** — per subproblem; include cases known from a recognized canonical problem/pattern (see *Canonical-problem recognition*) even if the prompt doesn't mention them
 7. **Contradictions and tensions** — each with both sides + resolution-needed flag
 8. **Constraints** — typed per taxonomy
 9. **Non-functional requirements** — from the catalogue, with open-question flags where the user hasn't specified
 10. **Success criteria** — how we'll know the problem is solved
-11. **Assumptions** — explicit, flagged
+11. **Assumptions** — explicit, flagged; assumptions drawn from environmental signals (see *Environmental signal handling*) must be flagged the same way, never adopted silently
 12. **Risks** — including premortem findings
 13. **Open questions** — prioritized by criticality, each with a proposed default if the user doesn't answer
 14. **Major blocks of work** — titled chunks, one paragraph each, ready to hand to `alf-user-story-writer`
