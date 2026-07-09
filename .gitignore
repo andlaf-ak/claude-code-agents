@@ -1,4 +1,5 @@
-.nwave/
+.nwave/*
+!.nwave/local-config.json
 __pycache__/
 *.pyc
 .pytest_cache/
